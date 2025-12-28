@@ -305,3 +305,49 @@ const router = createBrowserRouter([
 ```
 
 </details>
+
+
+### Link URL and query parameters
+###### branch name = routing5
+
+
+We can make dynamic segments of a path which is passed to ```<Link>```. Everything that is part of the path goes in the ```to``` property of the link component. Lets make a simple component which will echo back whatever is passed to the echo URL segment or the echo query parameter.
+
+<details>
+<summary>echo component</summary>
+
+```tsx
+function Echo() {
+  const params = useParams();
+  const [searchParams] = useSearchParams();
+  return <h1>{params.msg || searchParams.get('msg')}</h1>
+}
+```
+
+</details>
+
+To get the search params passed in the route, we use the ```useSearchParams()``` hook, which gives us a URLSearchParams object. We call ```searchParams.get('msg')``` to get the parameter we need.
+
+Now when we look at the app component, it will render 2 links. The first builds a string that uses a dynamic value as a url param. The second will use URLSearchParams to build the query string portion of the URL. HEres an example:
+
+<details>
+<summary>example in app component</summary>
+
+```tsx
+const param = "From param";
+const query = new URLSearchParams({msg: 'From query'});
+export default function App() {
+  return (
+    <section>
+      <p>
+        <Link to={'echo/${param}'}>Echo param</Link>
+      </p>
+      <p>
+        <Link to={'echo?${query.toString()}'}>Echo query</Link>
+      </p>
+    </section>
+  )
+}
+```
+
+</details>
