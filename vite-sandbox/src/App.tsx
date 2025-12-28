@@ -1,31 +1,23 @@
-import Layout from './Components/Layout'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import UsersContainer from './Components/User/UsersContainer'
 import './App.css';
-import routeOne from './Components/One';
-import routeTwo from './Components/Two';
-
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Layout />,
-    children: [
-      {
-        index: true,
-        element: <h1>Nesting Routes</h1>,
-      },
-      routeOne,
-      routeTwo,
-    ]
+    element: <UsersContainer />,
   },
-])
+]);
+
+
+
 
 
 function App() {
 
   return (
     <>
-    <RouterProvider router={router} />
+      <RouterProvider router={router} />
     </>
   )
 }
