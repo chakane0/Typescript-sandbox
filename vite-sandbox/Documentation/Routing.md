@@ -254,3 +254,54 @@ function Users({ users }: UsersProps) {
 </details>
 
 Now when we run the app we can use query parameters in ur url like this: ```http://localhost:5173/?order=desc``` which will trigger the logic to render the way we specified it in UsersContainer.tsx
+
+### Link Components 
+###### branch name = routing4
+
+When trying to establish a link, you may be inclined to use an ```<a>``` element to pass pages controlled by react router. But with that approach, that link will try to locate a page on the backend by sending a GET request. We don't need to do this because the route configuration is already in the app and we can handle routes locally if were trying to go to another "page".
+
+So when establishing links in our react app, the link will point to routes which points to components and render the new content. Were talking about the ```Link``` component here. 
+
+Heres a simple app which  which renders 2 links.
+
+<details>
+<summary>Basic linking</summary>
+
+```tsx
+function Layout() {
+  return (
+    <>
+      <nav>
+        <p>
+          <Link to='first'>First</Link>
+        </p>
+        <p>
+          <Link to='second'>Second</Link>
+        </p>
+      </nav>
+      <main>
+        <Outlet />
+      </main>
+    </>
+  )
+}
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <Layout />,
+    children: [
+      {
+        path: '/first',
+        element: <First />,
+      },
+      {
+        path: '/second',
+        element: <Second />,
+      },
+    ],
+  },
+]);
+```
+
+</details>
