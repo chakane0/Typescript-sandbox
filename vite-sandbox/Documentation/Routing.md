@@ -186,3 +186,71 @@ function UserData({ user }: UserDataProps) {
 
 </details>
 <br></br>
+
+### Query Parameters
+###### branch name = routing 3
+Here we will implement a user list component which renders a list of users. We will sort the list in descending order. 
+
+Heres how we will setup the route this time:
+
+<details>
+<summary>Setting up route for query param example</summary>
+
+```tsx
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <UsersContainer />,
+  },
+]);
+```
+</details>
+<br></br>
+
+Notice how theres no special setup for handling query parameters in the router. That is because the component for user list will handle it. All the router will do is pass the query parameters to the component.
+
+Lets now look at the user list component:
+
+<details>
+<summary>User list component</summary>
+
+```tsx
+export type SortOrder = 'asc' | 'desc';
+function UsersContainer() {
+  const [users, setUsers] = useState<string[]>([]);
+  const [search] = useSearchParams();
+  useEffect(() => {
+    const order = search.get('order') as SortOrder;
+    fetchUsers(order).then((users) => {
+      setUsers(users);
+    });
+  }, [search]);
+  return <Users users={users} />;
+}
+```
+</details>
+<br></br>
+The component will look for the order and uses it as an argument for fetchUsers() API to determine the sort order.
+
+Finally, this is how the users Component will look like
+<details>
+<summary>Users component</summary>
+
+```tsx
+type UsersProps = {
+  users: string[];
+};
+
+function Users({ users }: UsersProps) {
+  return (
+    <ul>
+      {users.map((user) => (
+        <li key={user}>{user}</li>
+      ))}
+    </ul>
+  );
+}
+```
+</details>
+
+Now when we run the app we can use query parameters in ur url like this: ```http://localhost:5173/?order=desc``` which will trigger the logic to render the way we specified it in UsersContainer.tsx
