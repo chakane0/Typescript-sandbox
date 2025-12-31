@@ -39,3 +39,26 @@ When running this, you'll see the <p> text getting rendered. If you open dev too
 The reason for setting a component as the MyComponent state is that when the App component renders for the first time, we dont have its code loaded yet. Once it loads, MyComponent will reference the proper value which results in the correct text being rendered. 
 
 Now we can get a better look into how the lazy() API simplifies all of this for us. 
+
+#### Making Components lazy
+So as we did before, instead of handling the promise returned by ```import()``` by returning the default export and setting state, you can use the ```lazy()``` API. This will take a function that returns an ```import()``` promise, the return value is a lazy component that you can render.
+
+Heres what the App component will look like now with this implemented:
+
+<details>
+<summary>updated app component</summary>
+
+```tsx
+import * as React from 'react';
+const MyComponent = React.lazy(() => import('./MyComponent'));
+function App() {
+    return <MyComponent />;
+}
+```
+
+</details>
+<br></br>
+
+Now the MyComponent value is created by calling ```lazy()```, which passes the dynamic module import as an argument. Now you have a separate bundle for the component and a lazy component which loads the bundle when its first rendered. This is essentially how code splitting works. In this example, you wont see anything render, but you will see the network call for the component. The ```import()``` function handles bundle creation for you and the ```lazy()``` api makes your components 'lazy' and handles all the work of importing components for you. 
+
+Now we can get into ```Suspense``` components to help display placeholders while components are loading. 
