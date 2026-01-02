@@ -1,12 +1,15 @@
 import './App.css';
 import * as React from 'react';
-
+import { FadeLoader } from 'react-spinners';
+// import MyPage from './Components/MyPage';
+const MyPage = React.lazy(() => import("./Components/MyPage"));
 function App() {
-  const MyComponent = React.lazy(()=> import('./Components/MyComponent'));
+  
   return (
-    <>
-      <MyComponent />;
-    </>
+    <React.Suspense fallback={<FadeLoader color={'#00bcd4'} />}>
+      
+      <MyPage />
+    </React.Suspense>
   )
 }
 
