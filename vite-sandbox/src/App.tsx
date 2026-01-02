@@ -1,12 +1,12 @@
 import './App.css';
 import * as React from 'react';
+import MyPage from './Components/MyPage';
 
 function App() {
-  const MyComponent = React.lazy(()=> import('./Components/MyComponent'));
   return (
-    <>
-      <MyComponent />;
-    </>
+    <React.Suspense fallback={'...loading'}>
+      <MyPage />
+    </React.Suspense>
   )
 }
 

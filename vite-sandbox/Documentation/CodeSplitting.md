@@ -41,6 +41,7 @@ The reason for setting a component as the MyComponent state is that when the App
 Now we can get a better look into how the lazy() API simplifies all of this for us. 
 
 #### Making Components lazy
+###### branch name = code-splitting-lazy-components-1 
 So as we did before, instead of handling the promise returned by ```import()``` by returning the default export and setting state, you can use the ```lazy()``` API. This will take a function that returns an ```import()``` promise, the return value is a lazy component that you can render.
 
 Heres what the App component will look like now with this implemented:
@@ -62,3 +63,62 @@ function App() {
 Now the MyComponent value is created by calling ```lazy()```, which passes the dynamic module import as an argument. Now you have a separate bundle for the component and a lazy component which loads the bundle when its first rendered. This is essentially how code splitting works. In this example, you wont see anything render, but you will see the network call for the component. The ```import()``` function handles bundle creation for you and the ```lazy()``` api makes your components 'lazy' and handles all the work of importing components for you. 
 
 Now we can get into ```Suspense``` components to help display placeholders while components are loading. 
+
+#### Using the Suspense Component
+###### branch name cl=ode-splitting-lazy-components-2
+
+Lazy components need to be rendered inside a Suspense component. An important note is that the lazy component does not have to be a child of a suspense component. This means you could have one Suspense component handle every lazy component in your app. 
+
+For example, heres a component which we could bundle separately and use lazily.
+
+<details>
+<summary>example component - MyFeature</summary>
+
+```tsx
+export default function MyFeature() {
+    return <p>My Feature</p>;
+}
+```
+
+</details>
+
+Now we can make the MyFeature component lazy and render it inside of a MyPage component.
+
+<details>
+<summary>MyPage component</summary>
+
+```tsx
+const MyFeature = React.lazy(() => import('./MyFeature'));
+function MyPage() {
+    return (
+        <>
+            <h1>My Page</h1>
+            <MyFeature />
+        </>
+    );
+}
+```
+
+</details>
+
+
+Here we are using the ```lazy()``` API to make the MyFeature component lazy. This means that when the MyPage Component is rendered, the code bundle which contains MyFeature will be downloaded because MyFeature was also rendered.
+
+An optimal approach to using the suspense component is to render just one Suspense component inside of our app component.
+
+<details>
+<summary>App component</summary>
+
+```tsx
+function App() {
+    return (
+        <React.Suspense fallback={'loading...'}>
+            <MyPage />
+        </React.Suspense>
+    )
+}
+```
+</details>
+
+Now when this runs, while the MyFeature code bundle is being downloaded, ```<MyPage>``` is replaced with the fallback text passed to Suspense. When we run this, throttle the network to 3G speed to see the rendering. 
+
