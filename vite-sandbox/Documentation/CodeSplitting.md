@@ -122,3 +122,32 @@ function App() {
 
 Now when this runs, while the MyFeature code bundle is being downloaded, ```<MyPage>``` is replaced with the fallback text passed to Suspense. When we run this, throttle the network to 3G speed to see the rendering. 
 
+#### Working with spinner fallbacks
+###### branch name = code-splitting-lazy-components-3
+
+The predominant fallback are spinner loaders, or skeleton screens but lets do spinners :).
+
+Lets modify the App component to include a spinner from the 'react-spinners' package as the Suspense fallback.
+
+<details>
+<summary>App component to include spinner loader</summary>
+
+```tsx
+import * as React from 'react';
+import { FadeLoader } from 'react-spinners';
+import MyPage from './MyPage';
+
+function App() {
+    return (
+        <React.Suspense fallback={<FadeLoader color='light-blue'>}>
+            <MyPage />
+        </React.Suspense>
+    );
+}
+```
+
+</details>
+
+Now a spinner object will appear on the screen as the lazy component is being downloaded and brought in for rendering. This gives the illusion tha the website is super fast and reliable. 
+
+Now we will tell you why its not ideal to make every component a lazy component. 
