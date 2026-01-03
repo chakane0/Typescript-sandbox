@@ -1,11 +1,35 @@
 import './App.css';
 import * as React from 'react';
 
+const First = React.lazy(() => import('./Components/First'))
+const Second = React.lazy(() => import('./Components/Second'));
+
+function ShowComponent({ name }: {name: string}) {
+  switch (name) {
+    case 'first':
+      return <First />;
+    case 'second':
+      return <Second />;
+    default:
+      return null;
+  }
+}
+
 function App() {
-  const MyComponent = React.lazy(()=> import('./Components/MyComponent'));
+  const [component, setComponent] = React.useState('');
   return (
     <>
-      <MyComponent />;
+      <label>
+        Load Component: {' '}
+        <select value={component} onChange={(e) => setComponent(e.target.value)}>
+          <option value=''>None</option>
+          <option value='first'>First</option>
+          <option value='second'>Second</option>
+        </select>
+      </label>
+      <React.Suspense fallback={<p>loading ...</p>}>
+        <ShowComponent name={component} />
+      </React.Suspense>
     </>
   )
 }

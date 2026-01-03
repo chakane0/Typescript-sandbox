@@ -151,3 +151,87 @@ function App() {
 Now a spinner object will appear on the screen as the lazy component is being downloaded and brought in for rendering. This gives the illusion tha the website is super fast and reliable. 
 
 Now we will tell you why its not ideal to make every component a lazy component. 
+
+
+#### Avoiding Lazy components
+###### branch name = code-splitting-lazy-components-4
+
+The downside of defaulting to making all your components lazy is that there will be so many HTTP requests to fetch them at one go. Youre better of bundling these components together to make one request for what is actually needed on the page at that time. 
+
+Think of pages as bundles. Lets build an example to show how to organize lazy components. For example we can have an app that has a couple pages and a few features on each page. We dont want to make these features lazy if theyre all going to be needed when the page loads. 
+
+Heres the app component for example to show the user a selector to pick which page to load:
+
+<details>
+<summary>Show component example</summary>
+
+```tsx
+const First = React.lazy(() => import('./First'));
+const Second = React.lazy(() => import('./Second'));
+function ShowComponent({ name }: { name: string }) {
+    switch (name) {
+        case 'first':
+            return <First />;
+        case 'second':
+            return <Second />;
+        default: 
+        return null;
+    }
+}
+```
+
+</details>
+
+The First and Second components will make up our app, we want to make those lazy components that load bundles on demand. Thew Show component renders the page.
+
+<details>
+<summary>App component</summary>
+
+```tsx
+function App() {
+    const [component, setComponent] = React.useState('');
+    return (
+        <>
+            <label>
+                Load Component: {' '}
+                <select value={component} onChange={(e) => setComponent(e.target.value)}>
+                    <option value=''>None</option>
+                    <option value='first'>First</option>
+                    <option value='second'>Second</option>
+                </select>
+            </label>
+            <React.Suspense fallback={<p>...loading</p>}>
+                <ShowComponent name={component} />
+            </React.Suspense>
+        </>
+    )
+}
+```
+
+</details>
+
+Now lets take a look at the First page component:
+
+
+<details>
+<summary>First Page</summary>
+
+```tsx
+import One from './One';
+import Two from './Two';
+import Three from './Three';
+
+export default function First() {
+    return (
+        <>
+            <One />
+            <Two />
+            <Three />
+        </>
+    );
+}
+```
+
+</details>
+
+Here the ```First``` component pulls in 3 components and renders them. These 3 components are part of the same bundle. We could make them all lazy but theres no point. We can have just one HTTP request for these 3 pages. 
