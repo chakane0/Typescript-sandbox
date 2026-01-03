@@ -1,12 +1,48 @@
 import './App.css';
 import * as React from 'react';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  Outlet,
+} from 'react-router-dom';
+import { FadeLoader } from 'react-spinner';
+
+const First = React.lazy(() => import('./Components/First'));
+const Second = React.lazy(() => import('./Components/Second'));
+
+function Layout() {
+  return (
+    <section>
+      <nav>
+        <span>
+          <Link to='first'>First</Link>
+        </span>
+        <span> | </span>
+        <span>
+          <Link to='second'>Second</Link>
+        </span>
+      </nav>
+      <section>
+        <React.Suspense fallback={<FadeLoader color={'green'}/>}>
+          <Outlet />
+        </React.Suspense>
+      </section>
+    </section>
+  )
+}
+
 
 function App() {
-  const MyComponent = React.lazy(()=> import('./Components/MyComponent'));
   return (
-    <>
-      <MyComponent />;
-    </>
+    <Router>
+      <Routes>
+        <Route path='/' element={<Layout />} />
+        <Route path='/first' element={<First />} />
+        <Route path='/second' element={<Second />} />
+      </Routes>
+    </Router>
   )
 }
 

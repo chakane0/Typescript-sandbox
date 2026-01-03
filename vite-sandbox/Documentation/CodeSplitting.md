@@ -235,3 +235,59 @@ export default function First() {
 </details>
 
 Here the ```First``` component pulls in 3 components and renders them. These 3 components are part of the same bundle. We could make them all lazy but theres no point. We can have just one HTTP request for these 3 pages. 
+
+
+#### Exploring Lazy pages and Routes
+###### branch name = code-splitting-lazy-components-5
+
+We just covered why we would avoid lazy components, the same thing can apply when your'e using react-router.
+
+Heres our app function:
+
+<details>
+<summary>app component routing setup</summary>
+
+```tsx
+const First = React.lazy(() => import('./First'));
+const Second = React.lazy(() => import('./Second'));
+
+function Layout() {
+    return (
+        <section>
+            <nav>
+                <span>
+                    <Link to='first'>First</Link>
+                </span>
+                <span> | </span>
+                <span>
+                    <Link to='second'>Second</Link>
+                </span>
+            </nav>
+            <section>
+                <React.Suspense fallback={<FadeLoader color='green'>}>
+                    <Outlet />
+                </React.Suspense>
+            </section>
+        </section>
+    )
+}
+
+export default function App() {
+    return (
+        <Router>
+            <Routes>
+                <Route path='/' element={<Layout />}>
+                    <Route path='/first' element={<First />} />
+                    <Route path='/second' element={<Second />} />
+                </Route>
+            </Routes>
+        </Router>
+    );
+}
+```
+
+</details>
+
+See how we have 2 lazy page components which will be bundled seperately from the rest of our app. The fallback content in this example uses the same FadeLoader spinner component we did earlier. 
+
+The Suspense component is placed beneath the navigation links meaning that the fallback content will be rendered in the spot where the page content will eventually show when it loads. The children of the suspense component are the Route components which will render our lazy page components. When the /first route is activated, the First component is rendered for the first time which triggers the bundle download. 
