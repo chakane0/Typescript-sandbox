@@ -9,4 +9,4 @@ Notes based on *React and React Native Third Edition* by Adam Boduch and Roy Der
 |4. <a href="vite-sandbox/Documentation/Typescript.md">Typescript</a>|
 |5. <a href="vite-sandbox/Documentation/Routing.md">Routing</a>|
 |6. <a href="vite-sandbox/Documentation/CodeSplitting.md">Code Splitting Using Lazy Components and Suspense</a>|
-|7. <a href="vite-sandbox/DocumentatioUser-Interface-Framework-Components.md">User Interface Framework Components</a>|
+|7. <a href="vite-sandbox/Documentation/User-Interface-Framework-Components.md">User Interface Framework Components</a>|
