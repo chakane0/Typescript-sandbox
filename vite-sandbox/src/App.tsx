@@ -1,12 +1,26 @@
 import './App.css';
-import * as React from 'react';
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
 
 function App() {
-  const MyComponent = React.lazy(()=> import('./Components/MyComponent'));
+  const textStyle = {
+    backgroundColor: "#cfe8fc",
+    margin: 1,
+    textAlign: "center",
+  }
+
   return (
     <>
-      <MyComponent />;
-    </>
+            <Container maxWidth='sm'>
+                <Typography sx={textStyle}>sm</Typography>
+            </Container>
+            <Container maxWidth='md'>
+                <Typography sx={textStyle}>md</Typography>
+            </Container>
+            <Container maxWidth='lg'>
+                <Typography sx={textStyle}>lg</Typography>
+            </Container>
+        </>
   )
 }
 
