@@ -1,11 +1,10 @@
 import './App.css';
-import * as React from 'react';
+import BasicState from './Components/BasicState';
 
 function App() {
-  const MyComponent = React.lazy(()=> import('./Components/MyComponent'));
   return (
     <>
-      <MyComponent />;
+      <BasicState />
     </>
   )
 }
