@@ -4,8 +4,9 @@ import Container from "@mui/material/Container";
 
 function App() {
   const textStyle = {
-    backgroundColor: "#cfe8fc",
+    backgroundColor: "#0b283f",
     margin: 1,
+    padding:5,
     textAlign: "center",
   }
 
